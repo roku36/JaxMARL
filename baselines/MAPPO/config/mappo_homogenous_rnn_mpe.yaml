@@ -20,5 +20,5 @@
 
 # WandB Params
 "WANDB_MODE": "online"
-"ENTITY": "amacrutherford"
+# "ENTITY": "amacrutherford"
 "PROJECT": "jaxmarl-mpe"

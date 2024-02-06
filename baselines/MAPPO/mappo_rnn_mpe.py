@@ -5,27 +5,28 @@ Based on PureJaxRL Implementation of IPPO, with changes to give a centralised cr
 import jax
 import jax.numpy as jnp
 import flax.linen as nn
-from flax import struct
+# from flax import struct
 import numpy as np
 import optax
 from flax.linen.initializers import constant, orthogonal
-from typing import Sequence, NamedTuple, Any, Tuple, Union, Dict
-import chex
+# from typing import Sequence, NamedTuple, Any, Tuple, Union, Dict
+from typing import Sequence, NamedTuple, Dict
+# import chex
 
 from flax.training.train_state import TrainState
 import distrax
 import hydra
-from omegaconf import DictConfig, OmegaConf
+# from omegaconf import DictConfig, OmegaConf
+from omegaconf import OmegaConf
 from functools import partial
 import jaxmarl
 from jaxmarl.wrappers.baselines import MPELogWrapper, JaxMARLWrapper
-from jaxmarl.environments.multi_agent_env import MultiAgentEnv, State
+# from jaxmarl.environments.multi_agent_env import MultiAgentEnv, State
 
 import wandb
 import functools
-import matplotlib.pyplot as plt
+# import matplotlib.pyplot as plt
 
-    
 class MPEWorldStateWrapper(JaxMARLWrapper):
     
     @partial(jax.jit, static_argnums=0)
@@ -512,7 +513,7 @@ def make_train(config):
             (ac_init_hstate, cr_init_hstate),
             _rng,
         )
-        runner_state, metric = jax.lax.scan(
+        runner_state, _ = jax.lax.scan(
             _update_step, (runner_state, 0), None, config["NUM_UPDATES"]
         )
         return {"runner_state": runner_state}
@@ -524,7 +525,7 @@ def main(config):
 
     config = OmegaConf.to_container(config)
     wandb.init(
-        entity=config["ENTITY"],
+        # entity=config["ENTITY"],
         project=config["PROJECT"],
         tags=["MAPPO", "RNN", config["ENV_NAME"]],
         config=config,
@@ -533,7 +534,7 @@ def main(config):
     rng = jax.random.PRNGKey(config["SEED"])
     with jax.disable_jit(False):
         train_jit = jax.jit(make_train(config)) 
-        out = train_jit(rng)
+        _ = train_jit(rng)
 
     
 if __name__=="__main__":
