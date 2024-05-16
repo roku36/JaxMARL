@@ -23,8 +23,7 @@ class ActorCritic(nn.Module):
     activation: str = "tanh"
 
     @nn.compact
-    def __call__(self, *args, **kwargs):
-        x = args[0]
+    def __call__(self, x):
         if self.activation == "relu":
             activation = nn.relu
         else:
